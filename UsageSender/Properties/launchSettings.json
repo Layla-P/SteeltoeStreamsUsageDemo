@@ -1,0 +1,13 @@
+{
+  "profiles": {
+    "UsageSender": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "Port": "8087"
+      }
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}
