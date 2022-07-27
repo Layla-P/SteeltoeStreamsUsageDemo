@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace UsageProcessor
+namespace UsageProcessor;
+
+public class UsageDetail
 {
-    public class UsageDetail
-    {
-        public string UserId { get; set; }
+    public string UserId { get; set; }
 
-        public long Duration { get; set; }
+    public long Duration { get; set; }
 
-        public long Data { get; set; }
+    public long Data { get; set; }
 
-    }
 }

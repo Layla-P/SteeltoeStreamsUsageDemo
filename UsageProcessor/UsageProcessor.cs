@@ -4,35 +4,34 @@ using Steeltoe.Messaging.Handler.Attributes;
 using Steeltoe.Stream.Attributes;
 using Steeltoe.Stream.Messaging;
 
-namespace UsageProcessor
+namespace UsageProcessor;
+
+[EnableBinding(typeof(IProcessor))]
+public class UsageProcess
 {
-    [EnableBinding(typeof(IProcessor))]
-    public class UsageProcessor
+    private static ILogger<UsageProcess> _logger;
+
+    private double _ratePerSecond = 0.1;
+
+    private double _ratePerMB = 0.05;
+
+    public UsageProcess(ILogger<UsageProcess> logger)
     {
-        private static ILogger<UsageProcessor> _logger;
+        _logger = logger ?? NullLogger<UsageProcess>.Instance;
+    }
 
-        private double _ratePerSecond = 0.1;
-
-        private double _ratePerMB = 0.05;
-
-        public UsageProcessor(ILogger<UsageProcessor> logger)
+    [StreamListener(IProcessor.INPUT)]
+    [SendTo(IProcessor.OUTPUT)]
+    public UsageCostDetail Handle(UsageDetail usageDetail)
+    {
+        var costDetail = new UsageCostDetail
         {
-            _logger = logger ?? NullLogger<UsageProcessor>.Instance;
-        }
+            UserId = usageDetail.UserId,
+            CallCost = usageDetail.Duration * _ratePerSecond,
+            DataCost = usageDetail.Data * _ratePerMB
+        };
+        _logger.LogInformation("Processed UsageCostDetail " + costDetail);
 
-        [StreamListener(IProcessor.INPUT)]
-        [SendTo(IProcessor.OUTPUT)]
-        public UsageCostDetail Handle(UsageDetail usageDetail)
-        {
-            var costDetail = new UsageCostDetail
-            {
-                UserId = usageDetail.UserId,
-                CallCost = usageDetail.Duration * _ratePerSecond,
-                DataCost = usageDetail.Data * _ratePerMB
-            };
-            _logger.LogInformation("Processed UsageCostDetail " + costDetail);
-
-            return costDetail;
-        }
+        return costDetail;
     }
 }

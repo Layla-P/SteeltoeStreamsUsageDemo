@@ -1,17 +1,7 @@
 ﻿using Microsoft.Extensions.Hosting;
 using Steeltoe.Stream.StreamHost;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
+using UsageProcessor;
 
-namespace UsageProcessor
-{
-    public class Program
-    {
-
-        static async Task Main(string[] args)
-        {
-            await StreamHost.CreateDefaultBuilder<UsageProcessor>(args)
+await StreamHost.CreateDefaultBuilder<UsageProcess>(args)
             .RunConsoleAsync();
-        }
-    }
-}
+ 

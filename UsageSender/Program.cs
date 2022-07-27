@@ -3,19 +3,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Threading.Tasks;
 using Steeltoe.Stream.StreamHost;
+using UsageSender;
 
-namespace UsageSender
-{
-    public class Program
-    {
-        static async Task Main(string[] args)
-        {
-            await StreamHost
+await StreamHost
             .CreateDefaultBuilder<UsageGenerator>(args)
             .ConfigureServices(svc => svc.AddHostedService<UsageGenerator>())
             .Build()
             .RunAsync();
-        }
-
-    }
-}
+    
